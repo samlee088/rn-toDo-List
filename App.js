@@ -2,6 +2,7 @@ import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
+import { StatusBar } from 'expo-status-bar';
 
 export default function App() {
 
@@ -34,33 +35,36 @@ export default function App() {
 
 
   return (
-    <View style = {styles.appContainer}>
-      <Button 
-        title = "Add New Goal"
-        color = '#50808E' 
-        onPress = {startAddGoalHandler} 
-      />
-      {/* Different ways to render modal, the modalsVisible && method is not recommended for this type, and it is better to use the built in modal visible functionality */}
-      {/* { modalIsVisible && < GoalInput onAddGoal = {addGoalHandler} />} */}
-      < GoalInput onAddGoal = {addGoalHandler} visible = {modalIsVisible} onCancel = {endAddGoalHandler} />
-      <View style = {styles.goalsContainer}>
-          <Text style = {styles.goalsHeader}>
-            List of Goals
-          </Text>
-          <FlatList data = {courseGoals} renderItem = {(itemData) => {
-            return ( 
-              < GoalItem 
-                text = {itemData.item.text} 
-                id = {itemData.item.id}
-                onDeleteItem = {deleteGoalHandler} 
-              />
-            )
-          }}
-          keyExtractor={(item, index) => {
-            return item.id;
-          }}/>
+    <>
+      <StatusBar style = 'light' />
+      <View style = {styles.appContainer}>
+        <Button 
+          title = "Add New Goal"
+          color = '#5e0acc' 
+          onPress = {startAddGoalHandler} 
+        />
+        {/* Different ways to render modal, the modalsVisible && method is not recommended for this type, and it is better to use the built in modal visible functionality */}
+        {/* { modalIsVisible && < GoalInput onAddGoal = {addGoalHandler} />} */}
+        < GoalInput onAddGoal = {addGoalHandler} visible = {modalIsVisible} onCancel = {endAddGoalHandler} />
+        <View style = {styles.goalsContainer}>
+            <Text style = {styles.goalsHeader}>
+              List of Goals
+            </Text>
+            <FlatList data = {courseGoals} renderItem = {(itemData) => {
+              return ( 
+                < GoalItem 
+                  text = {itemData.item.text} 
+                  id = {itemData.item.id}
+                  onDeleteItem = {deleteGoalHandler} 
+                />
+              )
+            }}
+            keyExtractor={(item, index) => {
+              return item.id;
+            }}/>
+        </View>
       </View>
-    </View>
+    </>
   );
 }
 
