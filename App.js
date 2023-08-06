@@ -1,4 +1,4 @@
-import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, View } from 'react-native';
 import { useState } from 'react';
 import GoalItem from './components/GoalItem';
 import GoalInput from './components/GoalInput';
@@ -6,25 +6,51 @@ import GoalInput from './components/GoalInput';
 export default function App() {
 
   const [courseGoals, setCourseGoals] = useState([]);
-  
+  const [modalIsVisible, setModalIsVisible] = useState(false);
+
+  function startAddGoalHandler() {
+    setModalIsVisible(true);
+  }
+
   function addGoalHandler(enteredGoalText) {
     console.log(enteredGoalText);
     setCourseGoals((currentCourseGoals) => [
       ...currentCourseGoals,
-      {text: enteredGoalText, key: Math.random().toString()}
+      {text: enteredGoalText, id: Math.random().toString()}
     ]);
+  }
+
+  function deleteGoalHandler(id) {
+    setCourseGoals( currentCourseGoals => {
+      return currentCourseGoals.filter( (goal) => goal.id !== id );
+    });
   }
 
 
   return (
     <View style = {styles.appContainer}>
-      < GoalInput onAddGoal = {addGoalHandler} />
+      <Button 
+        title = "Add New Goal"
+        color = '#50808E' 
+        onPress = {startAddGoalHandler} 
+      />
+      {/* { modalIsVisible && < GoalInput onAddGoal = {addGoalHandler} />} */}
+      < GoalInput onAddGoal = {addGoalHandler} visible = {modalIsVisible} />
       <View style = {styles.goalsContainer}>
           <Text style = {styles.goalsHeader}>
             List of Goals
           </Text>
           <FlatList data = {courseGoals} renderItem = {(itemData) => {
-             return < GoalItem text = {itemData.item.text} />
+            return ( 
+              < GoalItem 
+                text = {itemData.item.text} 
+                id = {itemData.item.id}
+                onDeleteItem = {deleteGoalHandler} 
+              />
+            )
+          }}
+          keyExtractor={(item, index) => {
+            return item.id;
           }}/>
       </View>
     </View>
