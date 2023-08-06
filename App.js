@@ -22,6 +22,8 @@ export default function App() {
       ...currentCourseGoals,
       {text: enteredGoalText, id: Math.random().toString()}
     ]);
+    //Option to close out Modal when adding in a goal or not
+    // endAddGoalHandler()
   }
 
   function deleteGoalHandler(id) {
@@ -38,6 +40,7 @@ export default function App() {
         color = '#50808E' 
         onPress = {startAddGoalHandler} 
       />
+      {/* Different ways to render modal, the modalsVisible && method is not recommended for this type, and it is better to use the built in modal visible functionality */}
       {/* { modalIsVisible && < GoalInput onAddGoal = {addGoalHandler} />} */}
       < GoalInput onAddGoal = {addGoalHandler} visible = {modalIsVisible} onCancel = {endAddGoalHandler} />
       <View style = {styles.goalsContainer}>
